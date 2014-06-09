@@ -26,7 +26,6 @@ function processUserInput(chatApp, socket) {
 var socket = io.connect();
 $(document).ready(function() {
 	var chatApp = new Chat(socket);
-￼  	
 	socket.on('nameResult', function(result) {
 		var message;
 	    if (result.success) {
@@ -58,7 +57,7 @@ $(document).ready(function() {
 	    $('#room-list div').click(function() {
 	      chatApp.processCommand('/join ' + $(this).text());
 	      $('#send-message').focus();
-		}); 
+		});
 	});
   	
   	setInterval(function() {
@@ -68,6 +67,7 @@ $(document).ready(function() {
   	$('#send-message').focus();
   	
   	$('#send-form').submit(function() {
+  		console.log("'#send-form').submit(function() {");
     	processUserInput(chatApp, socket);
     	return false;
 	}); 
