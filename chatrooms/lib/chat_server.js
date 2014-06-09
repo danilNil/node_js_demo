@@ -18,7 +18,7 @@ exports.listen = function(server) {
     handleNameChangeAttempts(socket, nickNames, namesUsed);
     handleRoomJoining(socket);
     socket.on('rooms', function() {
-      socket.emit('rooms', io.sockets.manager.rooms);
+      socket.emit('rooms', io.sockets.adapter.rooms);
 	  });
     handleClientDisconnection(socket, nickNames, namesUsed);
   });
@@ -43,7 +43,8 @@ function joinRoom(socket, room) {
   socket.broadcast.to(room).emit('message', {
     text: nickNames[socket.id] + ' has joined ' + room + '.'
   });
-  var usersInRoom = io.sockets.clients(room);
+  console.log("joined room:" + room);
+  var usersInRoom = io.sockets.adapter.rooms[room].length;
   if (usersInRoom.length > 1) {
     var usersInRoomSummary = 'Users currently in ' + room + ': ';
     for (var index in usersInRoom) {
