@@ -14,3 +14,9 @@ exports.list = function(req, res){
     photos: photos
   });
 };
+
+exports.form = function(req, res){
+   res.render('photos/upload', {
+     title: 'Photo upload'
+   });
+};
