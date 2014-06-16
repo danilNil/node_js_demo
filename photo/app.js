@@ -25,6 +25,7 @@ app.use('/users', users);
 app.use(logger('dev'));
 app.get('/', photos.list);
 app.get('/upload', photos.form);
+app.get('/photo/:id/download', photos.download(app.get('photos')));
 
 var multipartMiddleware = multipart();
 app.post('/upload', multipartMiddleware, photos.submit(app.get('photos')));

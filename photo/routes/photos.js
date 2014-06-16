@@ -52,3 +52,22 @@ exports.form = function(req, res){
      title: 'Photo upload'
    });
 };
+
+exports.download = function(dir){
+  return function(req, res, next){
+    var id = req.params.id;
+    Photo.findById(id, function(err, photo){
+      if (err) return next(err);
+      var path = join(dir, photo.path);
+      console.log("we start downloading");
+      console.log(path);
+      res.download(path, photo.name+'.jpeg', function(err){
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("done downloading");
+        }
+      });
+    });
+  }; 
+};
