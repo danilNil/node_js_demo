@@ -4,6 +4,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multipart = require('connect-multiparty');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -16,17 +17,26 @@ app.set('view engine', 'ejs');
 app.set('photos', __dirname + '/public/photos');
 
 app.use(favicon());
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 
 // app.use('/', routes);
 app.use('/users', users);
+app.use(logger('dev'));
 app.get('/', photos.list);
 app.get('/upload', photos.form);
-app.post('/upload', photos.submit(app.get('photos')));
+
+var multipartMiddleware = multipart();
+app.post('/upload', multipartMiddleware, photos.submit(app.get('photos')));
+
+//app.post('/upload', photos.submit(app.get('photos')));
+
+// app.post('/upload', function (req, res) {
+//     console.log(req.body);
+
+//     res.send("well done");
+//     return;
+// })
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -17,9 +17,10 @@ var join = path.join;
 exports.submit = function (dir) {
   console.log("dir: " + dir);
   return function(req, res, next){
-    console.log("req: " + req);
     console.log("req.files: " + req.files);
-    console.log("req.body: " + req.body);
+    console.log("req.body: ");
+    console.dir(req.body);
+    //console.dir(req);
     var img = req.files.photo.image;
     var name = req.body.photo.name || img.name;
     var path = join(dir, img.name);
@@ -37,9 +38,12 @@ exports.submit = function (dir) {
 };
 
 exports.list = function(req, res){
-  res.render('photos', {
-    title: 'Photos',
-    photos: photos
+  Photo.find({}, function(err, photos){
+    if (err) return next(err);
+      res.render('photos', {
+        title: 'Photos',
+        photos: photos
+      }); 
   });
 };
 
